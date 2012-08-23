@@ -2,6 +2,10 @@
 
 Class Digital_Product_Model extends CI_Model {
 	
+	/********************************************************************
+		Separate DB for FR and EN
+	********************************************************************/
+	
 	function __construct()
 	{
 		parent::__construct();

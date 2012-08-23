@@ -51,12 +51,16 @@
 			<label for="slug"><?php echo lang('parent');?> </label>
 			<?php
 			$data	= array(0 => 'Top Level Category');
-			foreach($categories as $parent)
+			//foreach($categories as $parent)
+			$count = 0;
+			foreach($categories_drop_down_list_ids as $parent)
 			{
 				if($parent->id != $id)
 				{
-					$data[$parent->id] = $parent->name;
+					//$data[$parent->id] = $parent->name;
+					$data[$parent->id] = $categories_drop_down_list_names[$count];
 				}
+				$count++;
 			}
 			echo form_dropdown('parent_id', $data, $parent_id);
 			?>

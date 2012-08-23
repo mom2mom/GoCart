@@ -123,15 +123,36 @@ Class Product_model extends CI_Model
 	{
 		if ($product['id'])
 		{
+			//$this->db->where('id', $product['id']);
+			//$this->db->update('products', $product);
+			//$id	= $product['id'];
+			
 			$this->db->where('id', $product['id']);
 			$this->db->update('products', $product);
-
+			$this->db->set_dbprefix('');
+			$this->updateOriginalProduct($product, $product['id']);
+			$this->db->set_dbprefix('gc_fr_');
 			$id	= $product['id'];
 		}
 		else
 		{
+			//$this->db->insert('products', $product);
+			//$id	= $this->db->insert_id();
+			
+			$result_id = $this->insertOriginalProduct($product);
+			$product['id'] = $result_id;
+			
 			$this->db->insert('products', $product);
-			$id	= $this->db->insert_id();
+			
+			$this->db->set_dbprefix('');
+			$this->db->insert('gc_en_products', $product);
+			$this->db->insert('gc_en_routes', array('slug' => $product['slug'], 'route' => "cart/product/" . $result_id));
+			$route_id = $this->db->insert_id();
+			$this->db->where('id', $result_id);
+			$this->db->update('gc_en_products', array('route_id ' => $route_id));
+			$this->db->set_dbprefix('gc_fr_');
+			
+			$id	= $result_id;
 		}
 
 		//loop through the product options and add them to the db
@@ -209,7 +230,13 @@ Class Product_model extends CI_Model
 		// delete coupon reference
 		$this->db->where('product_id', $id);
 		$this->db->delete('coupons_products');
-
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('article_ID', $id);
+		$this->db->delete('articles');
+		$this->db->where('id', $id);
+		$this->db->delete('gc_en_products');
+		$this->db->set_dbprefix('gc_fr_');
 	}
 
 	function add_product_to_category($product_id, $optionlist_id, $sequence)
@@ -284,4 +311,185 @@ Class Product_model extends CI_Model
 		
 		return $product;
 	}
+	
+	function insertOriginalProduct($product)
+	{
+
+		date_default_timezone_set('Europe/Paris');
+		$dateTime = date('Y-m-d H:i:s');  
+		$dateTime_string = strval($dateTime);
+		
+									$sql  = "INSERT INTO articles (NOM_DEPOSANT, ID_COMPTE_DEPOSANT, DEF_NATURE, DEF_OBJET, DEF_SOUS_OBJET, DEF_MARQUE, DEF_SOUS_MARQUE, DEF_TAILLE, DEF_SOUS_TAILLE, DEF_GAMME_DE_PRIX, DEF_SOUS_GAMME_DE_PRIX, DEF_COULEUR_NAME, DEF_COULEUR_HEX, DEF_COULEUR_DESCRIPT, category_xml, category_xml_navigation, size_image1, image1_data, image2_data, image3_data, prix_deposant, prix_acheteur, prix_deposant_en_baisse, prix_acheteur_en_baisse, poids, mode_livraison_specifique, stockage, description, couleur_dominante, matieres_principales, saison, detail_supplem_1, detail_supplem_2, detail_supplem_3, detail_supplem_4, meta_tags, meta_tags_navigation, date_creation, date_expiration, date_panier, date_vendu, status_info_complete, status_incorporer_newsletter, status_afficher_a_la_vente, status_prix_acheteur_en_baisse, status_reserver, status_vendu, quid_1, quid_2, extra_1, extra_2, extra_3, extra_4) VALUES(";
+									//$sql .= $this->db->escape($title);
+/*NOM_DEPOSANT*/  					$sql .= " '', ";
+/*ID_COMPTE_DEPOSANT*/  			$sql .= " '', ";
+/*DEF_NATURE*/  					$sql .= " '', ";
+/*DEF_OBJET*/  						$sql .= " '', ";
+/*DEF_SOUS_OBJET*/  				$sql .= " '', ";
+/*DEF_MARQUE*/ 						$sql .= " '', ";
+/*DEF_SOUS_MARQUE*/  				$sql .= " '', ";
+/*DEF_TAILLE*/  					$sql .= " '', ";
+/*DEF_SOUS_TAILLE*/  				$sql .= " '', ";
+/*DEF_GAMME_DE_PRIX*/  				$sql .= " '', ";
+/*DEF_SOUS_GAMME_DE_PRIX*/  		$sql .= " '', ";
+/*DEF_COULEUR_NAME*/  				$sql .= " '', ";
+/*DEF_COULEUR_HEX*/  				$sql .= " '', ";
+/*DEF_COULEUR_DESCRIPT*/  			$sql .= " '', ";
+/*category_xml*/  					$sql .= " '', ";
+/*category_xml_navigation*/  		$sql .= " '', ";
+/*size_image1*/  					$sql .= " '', ";
+/*image1_data*/  					$sql .= " '', ";
+/*image2_data*/  					$sql .= " '', ";
+/*image3_data*/  					$sql .= " '', ";
+/*prix_deposant*/  					$sql .= 0 . ", ";
+/*prix_acheteur*/  					$sql .= intval($product['price']) . ", ";
+/*prix_deposant_en_baisse*/  		$sql .= 0 . ", ";
+/*prix_acheteur_en_baisse*/  		$sql .= intval($product['saleprice']) . ", ";
+/*poids*/  							$sql .= floatval($product['weight'])  . ", ";
+/*mode_livraison_specifique*/  		$sql .= " '', ";
+/*stockage*/  						$sql .= " '', ";
+/*description*/  					$sql .= $this->db->escape($product['description']) . ", ";
+/*couleur_dominante*/  				$sql .= " '', ";
+/*matieres_principales*/ 			$sql .= " '', ";
+/*saison*/  						$sql .= " '', ";
+/*detail_supplem_1*/  				$sql .= $this->db->escape($product['name']) . ", ";
+/*detail_supplem_2*/  				$sql .= $this->db->escape($product['excerpt']) . ", ";
+/*detail_supplem_3*/  				$sql .= $this->db->escape($product['seo_title']) . ", ";
+/*detail_supplem_4*/  				$sql .= $this->db->escape($product['meta']) . ", ";
+/*meta_tags*/  						$sql .= " '', ";
+/*meta_tags_navigation*/  			$sql .= " '', ";
+/*date_creation*/  					$sql .= "'" . $dateTime_string . "', ";
+/*date_expiration*/  				$sql .= " '', ";
+/*date_panier*/  					$sql .= " '', ";
+/*date_vendu*/  					$sql .= " '', ";
+/*status_info_complete*/  			$sql .= " '0',";
+/*status_incorporer_newsletter*/  	$sql .= " '0',";
+/*status_afficher_a_la_vente*/  	$sql .= " '0',";
+/*status_prix_acheteur_en_baisse*/  $sql .= " '0',";
+/*status_reserver*/  				$sql .= " '0',";
+/*status_vendu*/  					$sql .= " '0',";
+/*quid_1*/  						$sql .= " '', ";
+/*quid_2*/  						$sql .= " '', ";
+/*extra_1*/  						$sql .= " '', ";
+/*extra_2*/  						$sql .= " '', ";
+/*extra_3*/  						$sql .= " '', ";
+/*extra_4*/  						$sql .= " ''  ";
+									$sql .= ")";
+		
+		$this->db->query($sql);
+		$result_id = $this->db->insert_id();
+		
+		return $result_id;
+	}
+	
+	function updateOriginalProduct($product, $id)
+	{
+		$arr = array(
+	    	//'NOM_DEPOSANT' => '',
+			//'ID_COMPTE_DEPOSANT' => '',
+			//'DEF_NATURE' => '',
+			//'DEF_OBJET' => '',
+			//'DEF_SOUS_OBJET' => '',
+			//'DEF_MARQUE' => '',
+			//'DEF_SOUS_MARQUE' => '',
+			//'DEF_TAILLE' => '',
+			//'DEF_SOUS_TAILLE' => '',
+			//'DEF_GAMME_DE_PRIX' => '',
+			//'DEF_SOUS_GAMME_DE_PRIX' => '',
+			//'DEF_COULEUR_NAME' => '',
+			//'DEF_COULEUR_HEX' => '',
+			//'DEF_COULEUR_DESCRIPT' => '',
+			//'category_xml' => '',
+			//'category_xml_navigation' => '',
+			//'size_image1' => '',
+			//'image1_data' => '',
+			//'image2_data' => '',
+			//'image3_data' => '',
+			//'prix_deposant' => 1,
+			'prix_acheteur' => intval($product['price']),
+			//'prix_deposant_en_baisse' => 0,
+			'prix_acheteur_en_baisse' => intval($product['saleprice']),
+			'poids' => number_format(round(floatval($product['weight']), 3), 3, '.', ''),
+			//'mode_livraison_specifique' => '',
+			//'stockage' => '',
+			'description' => $product['description'],
+			//'couleur_dominante' => '',
+			//'matieres_principales' => '',
+			//'saison' => '',
+			'detail_supplem_1' => $product['name'],
+			'detail_supplem_2' => $product['excerpt'],
+			'detail_supplem_3' => $product['seo_title'],
+			'detail_supplem_4' => $product['meta']
+			//'meta_tags' => '',
+			//'meta_tags_navigation' => '',
+			//'date_creation' => '',
+			//'date_expiration' => '',
+			//'date_panier' => '',
+			//'date_vendu' => '',
+			//'status_info_complete' => '',
+			//'status_incorporer_newsletter' => '',
+			//'status_afficher_a_la_vente' => '',
+			//'status_prix_acheteur_en_baisse' => '',
+			//'status_reserver' => '',
+			//'status_vendu' => '',
+			//'quid_1' => '',
+			//'quid_2' => '',
+			//'extra_1' => '',
+			//'extra_2' => '',
+			//'extra_3' => '',
+			//'extra_4' => ''
+		);
+		
+		$arr2 = array(
+			'price' => $product['price'],
+			'saleprice' => $product['saleprice'],
+			'prix_acheteur' => intval($product['price']),
+			'prix_acheteur_en_baisse' => intval($product['saleprice']),
+			'weight' => strval($product['weight']),
+			'images' => $product['images'],
+			'sku' => $product['sku'],
+			'shippable' => $product['shippable'],
+			'fixed_quantity' => $product['fixed_quantity'],
+			'track_stock' => $product['track_stock'],
+			'taxable' => $product['taxable'],
+			'quantity' => $product['quantity'],
+			'enabled' => $product['enabled'],
+			'related_products' => $product['related_products']
+		);
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('article_ID', $id);
+		$this->db->update('articles', $arr);
+		$this->db->where('article_ID', $id);
+		$this->db->update('articles_valides', $arr);
+		$this->db->where('id', $id);
+		$this->db->update('gc_en_products', $arr2);
+		$this->db->set_dbprefix('gc_fr_');   						
+									
+	}
+	
+	function updateProductPoids($poids, $article_ID)
+	{	
+		$connection = array(
+			'host_db' => "localhost", // nom de votre serveur
+			'user_db' => "webmaster", // nom d'utilisateur de connexion ‡ votre bdd
+			'password_db' => "m0rebeer", // mot de passe de connexion ‡ votre bdd
+			'bdd_db' => "mom2mom_db" // nom de votre bdd
+		);
+		
+		$mysqli = new mysqli($connection['host_db'], $connection['user_db'], $connection['password_db'], $connection['bdd_db']);
+		
+		$query = "UPDATE articles SET poids=? WHERE article_ID=?";	
+		$stmt = mysqli_prepare($mysqli, $query);
+		if (!$stmt) {
+			die('mysqli error: ' . mysqli_error($mysqli));
+		}
+		mysqli_stmt_bind_param($stmt, 'di', $poids, $article_ID);
+		mysqli_stmt_execute($stmt);
+		mysqli_stmt_free_result($stmt);
+		
+		$mysqli->close();
+		
+	}
+	
 }

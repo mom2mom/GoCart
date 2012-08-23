@@ -26,7 +26,7 @@
 			<div class="category_box">
 				<div class="thumbnail">
 					<a href="<?php echo site_url($subcategory->slug); ?>">
-						<img src="<?php echo (!empty($subcategory->image))?base_url('uploads/images/thumbnails/'.$subcategory->image):base_url('images/nopicture.png');?>" alt="<?php echo lang('no_image_available');?>"/>
+						<img src="<?php echo (!empty($subcategory->image))?base_url(IMG_UPLOAD_FOLDER.'uploads/images/thumbnails/'.$subcategory->image):base_url(ASSETS_FOLDER.'images/nopicture.png');?>" alt="<?php echo lang('no_image_available');?>"/>
 					</a>
 				</div>
 				<div class="product_name">
@@ -77,7 +77,7 @@
 				
 				<div class="thumbnail">
 					<?php
-					$photo	= '<img src="'.base_url('images/nopicture.png').'" alt="'.lang('no_image_available').'"/>';
+					$photo	= '<img src="'.base_url(ASSETS_FOLDER.'images/nopicture.png').'" alt="'.lang('no_image_available').'"/>';
 					$product->images	= array_values($product->images);
 					
 					if(!empty($product->images[0]))
@@ -91,7 +91,7 @@
 							}
 						}
 
-						$photo	= '<img src="'.base_url('uploads/images/thumbnails/'.$primary->filename).'" alt="'.$product->seo_title.'"/>';
+						$photo	= '<img src="'.base_url(IMG_UPLOAD_FOLDER.'uploads/images/thumbnails/'.$primary->filename).'" alt="'.$product->seo_title.'"/>';
 					}
 					?>
 					<a href="<?php echo site_url($product->slug); ?>">

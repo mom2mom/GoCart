@@ -1,6 +1,10 @@
 <?php
 Class Banner_model extends CI_Model
 {
+	/********************************************************************
+		Separate DB for FR and EN
+	********************************************************************/
+	
 	function get_banners($limit = false)
 	{
 		if($limit)

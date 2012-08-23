@@ -18,7 +18,8 @@ class Categories extends Admin_Controller {
 		//$this->session->set_flashdata('message', 'this is our message');
 		
 		$data['page_title']	= lang('categories');
-		$data['categories']	= $this->Category_model->get_categories_tierd();
+		//$data['categories']	= $this->Category_model->get_categories_tierd();
+		$data['categories']	= $this->Category_model->get_categories_tierd_ordered_by_parent_id();
 		
 		$this->load->view($this->config->item('admin_folder').'/categories', $data);
 	}
@@ -57,8 +58,10 @@ class Categories extends Admin_Controller {
 	function form($id = false)
 	{
 		
-		$config['upload_path']		= 'uploads/images/full';
-		$config['allowed_types']	= 'gif|jpg|png';
+		//$config['upload_path']		= 'uploads/images/full';
+		//$config['upload_path'] 		= $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/full';
+		$config['upload_path'] 		= FCPATH.$this->config->item('img_upload_folder').'uploads/images/full';
+		$config['allowed_types']	= 'gif|jpg|jpeg|png';
 		$config['max_size']			= $this->config->item('size_limit');
 		$config['max_width']		= '1024';
 		$config['max_height']		= '768';
@@ -72,6 +75,8 @@ class Categories extends Admin_Controller {
 		$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 		
 		$data['categories']		= $this->Category_model->get_categories();
+		$data['categories_drop_down_list_names'] = $this->Category_model->get_categories_drop_down_list_names();
+		$data['categories_drop_down_list_ids'] = $this->Category_model->get_categories_drop_down_list_ids();
 		$data['page_title']		= lang('category_form');
 		
 		//default values are empty if the customer is new
@@ -92,7 +97,7 @@ class Categories extends Admin_Controller {
 		if ($id)
 		{	
 			$category		= $this->Category_model->get_category($id);
-
+			
 			//if the category does not exist, redirect them to the category list with an error
 			if (!$category)
 			{
@@ -148,10 +153,18 @@ class Categories extends Admin_Controller {
 					if($data['image'] != '')
 					{
 						$file = array();
-						$file[] = 'uploads/images/full/'.$data['image'];
-						$file[] = 'uploads/images/medium/'.$data['image'];
-						$file[] = 'uploads/images/small/'.$data['image'];
-						$file[] = 'uploads/images/thumbnails/'.$data['image'];
+						//$file[] = 'uploads/images/full/'.$data['image'];
+						//$file[] = 'uploads/images/medium/'.$data['image'];
+						//$file[] = 'uploads/images/small/'.$data['image'];
+						//$file[] = 'uploads/images/thumbnails/'.$data['image'];
+						//$file[] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/full/'.$data['image'];
+						//$file[] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/medium/'.$data['image'];
+						//$file[] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/small/'.$data['image'];
+						//$file[] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/thumbnails/'.$data['image'];
+						$file[] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/full/'.$data['image'];
+						$file[] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/medium/'.$data['image'];
+						$file[] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/small/'.$data['image'];
+						$file[] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/thumbnails/'.$data['image'];
 						
 						foreach($file as $f)
 						{
@@ -188,8 +201,12 @@ class Categories extends Admin_Controller {
 				
 				//this is the larger image
 				$config['image_library'] = 'gd2';
-				$config['source_image'] = 'uploads/images/full/'.$save['image'];
-				$config['new_image']	= 'uploads/images/medium/'.$save['image'];
+				//$config['source_image'] = 'uploads/images/full/'.$save['image'];
+				//$config['new_image']	= 'uploads/images/medium/'.$save['image'];
+				//$config['source_image'] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/full/'.$save['image'];
+				//$config['new_image']	= $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/medium/'.$save['image'];
+				$config['source_image'] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/full/'.$save['image'];
+				$config['new_image']	= FCPATH.$this->config->item('img_upload_folder').'uploads/images/medium/'.$save['image'];
 				$config['maintain_ratio'] = TRUE;
 				$config['width'] = 600;
 				$config['height'] = 500;
@@ -199,8 +216,12 @@ class Categories extends Admin_Controller {
 
 				//small image
 				$config['image_library'] = 'gd2';
-				$config['source_image'] = 'uploads/images/medium/'.$save['image'];
-				$config['new_image']	= 'uploads/images/small/'.$save['image'];
+				//$config['source_image'] = 'uploads/images/medium/'.$save['image'];
+				//$config['new_image']	= 'uploads/images/small/'.$save['image'];
+				//$config['source_image'] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/medium/'.$save['image'];
+				//$config['new_image']	= $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/small/'.$save['image'];
+				$config['source_image'] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/medium/'.$save['image'];
+				$config['new_image']	= FCPATH.$this->config->item('img_upload_folder').'uploads/images/small/'.$save['image'];
 				$config['maintain_ratio'] = TRUE;
 				$config['width'] = 300;
 				$config['height'] = 300;
@@ -210,8 +231,12 @@ class Categories extends Admin_Controller {
 
 				//cropped thumbnail
 				$config['image_library'] = 'gd2';
-				$config['source_image'] = 'uploads/images/small/'.$save['image'];
-				$config['new_image']	= 'uploads/images/thumbnails/'.$save['image'];
+				//$config['source_image'] = 'uploads/images/small/'.$save['image'];
+				//$config['new_image']	= 'uploads/images/thumbnails/'.$save['image'];
+				//$config['source_image'] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/small/'.$save['image'];
+				//$config['new_image']	= $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/thumbnails/'.$save['image'];
+				$config['source_image'] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/small/'.$save['image'];
+				$config['new_image']	= FCPATH.$this->config->item('img_upload_folder').'uploads/images/thumbnails/'.$save['image'];
 				$config['maintain_ratio'] = TRUE;
 				$config['width'] = 150;
 				$config['height'] = 150;

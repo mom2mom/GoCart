@@ -9,7 +9,7 @@ $lang['error_must_select']			= 'You must select a category to organize';
 $lang['error_not_found']			= 'The requested category could not be found.';
 $lang['organize_category']			= 'Organize "%s" Category';
 $lang['organize']					= 'Organize';
-$lang['category_id']				= 'Category ID';
+$lang['category_id']				= 'ID';
 $lang['category_form']				= 'Category Form';
 $lang['name']						= 'Name';
 $lang['slug']						= 'Slug';
@@ -33,4 +33,7 @@ $lang['meta_data_description']		= 'ex. &lt;meta name="description" content="We s
 $lang['drag_and_drop']				= 'Drag and drop the products in the order you would like them to appear.';
 $lang['sku']						= 'SKU';
 $lang['price']						= 'Price';
-$lang['sale']						= 'Sale';
+$lang['original']					= 'Original price';
+$lang['sale']						= 'Reduced price';
+$lang['solde']						= 'Sale price';
+$lang['max_file_size']				= 'Max File Size';

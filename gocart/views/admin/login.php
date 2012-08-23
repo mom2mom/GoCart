@@ -23,7 +23,7 @@ $(document).ready(function(){
 </script>
 <style type="text/css">
 body {
-	background-image:url('<?php echo base_url('images/admin/bg_dots.gif');?>');
+	background-image:url('<?php echo base_url($this->config->item('assets_folder').'images/admin/bg_dots.gif');?>');
 	margin:0px;
 	padding:0px;
 }
@@ -77,7 +77,7 @@ label {
 </style>
 </head>
 <body>
-	<img src="<?php echo base_url('images/admin/login_logo.png');?>" id="logo"/>
+	<img src="<?php echo base_url($this->config->item('assets_folder').'images/admin/login_logo.png');?>" id="logo"/>
 	<?php
 	if ($this->session->flashdata('error'))
 	{

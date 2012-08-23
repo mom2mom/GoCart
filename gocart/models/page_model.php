@@ -1,6 +1,10 @@
 <?php
 Class Page_model extends CI_Model
 {
+	/********************************************************************
+		Separate DB for FR and EN
+	********************************************************************/
+	
 	function page_model()
 	{
 			parent::__construct();

@@ -18,7 +18,7 @@
 	<div id="product_image">
 		<?php
 		//get the primary photo for the product
-		$photo	= '<img src="'.base_url('images/nopicture.png').'" alt="'.lang('no_image_available').'"/>';
+		$photo	= '<img src="'.base_url(ASSETS_FOLDER.'images/nopicture.png').'" alt="'.lang('no_image_available').'"/>';
 
 		if(count($product->images) > 0 )
 		{	
@@ -31,7 +31,7 @@
 				}
 			}
 
-			$photo	= '<a href="'.base_url('uploads/images/medium/'.$primary->filename).'" rel="gallery" title="'.$primary->caption.'"><img src="'.base_url('uploads/images/small/'.$primary->filename).'" alt="'.$product->slug.'"/></a>';
+			$photo	= '<a href="'.base_url(IMG_UPLOAD_FOLDER.'uploads/images/medium/'.$primary->filename).'" rel="gallery" title="'.$primary->caption.'"><img src="'.base_url(IMG_UPLOAD_FOLDER.'uploads/images/small/'.$primary->filename).'" alt="'.$product->slug.'"/></a>';
 		}
 		echo $photo;
 	
@@ -52,7 +52,7 @@
 			if($image != $primary):
 		?>
 			<div class="product_thumbnail" <?php if($img_counter == 3){echo'style="margin-right:0px;"'; $img_counter=1;}else{$img_counter++;}?>>
-				<a rel="gallery" href="<?php echo base_url('uploads/images/medium/'.$image->filename);?>" title="<?php echo $image->caption;?>"><img src="<?php echo base_url('uploads/images/thumbnails/'.$image->filename);?>"/></a>
+				<a rel="gallery" href="<?php echo base_url(IMG_UPLOAD_FOLDER.'uploads/images/medium/'.$image->filename);?>" title="<?php echo $image->caption;?>"><img src="<?php echo base_url($this->config->item('img_upload_folder').'uploads/images/thumbnails/'.$image->filename);?>"/></a>
 			</div>
 		<?php endif;
 		endforeach;?>
@@ -215,7 +215,7 @@
 				<div class="category_box">
 					<div class="thumbnail">
 						<?php
-						$photo	= '<img src="'.base_url('images/nopicture.png').'" alt="'.lang('no_image_available').'"/>';
+						$photo	= '<img src="'.base_url(ASSETS_FOLDER.'images/nopicture.png').'" alt="'.lang('no_image_available').'"/>';
 						$product->images	= array_values($product->images);
 
 						if(!empty($product->images[0]))
@@ -229,7 +229,7 @@
 								}
 							}
 
-							$photo	= '<img src="'.base_url('uploads/images/thumbnails/'.$primary->filename).'" alt="'.$product->seo_title.'"/>';
+							$photo	= '<img src="'.base_url(IMG_UPLOAD_FOLDER.'uploads/images/thumbnails/'.$primary->filename).'" alt="'.$product->seo_title.'"/>';
 						}
 						?>
 						<a href="<?php echo site_url($product->slug); ?>">

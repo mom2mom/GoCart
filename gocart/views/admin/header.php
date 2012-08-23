@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Go Cart :: <?php echo  $page_title; ?></title>
 
-<link href="<?php echo base_url('css/admin.css');?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url($this->config->item('assets_folder').'css/admin.css');?>" rel="stylesheet" type="text/css" />
 
 <?php
 //test for http / https for non hosted files
@@ -16,15 +16,15 @@ if(isset($_SERVER['HTTPS']))
 ?>
 <link href='<?php echo $http;?>://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css' />
 
-<link type="text/css" href="<?php echo base_url('js/jquery/theme/smoothness/jquery-ui-1.8.16.custom.css');?>" rel="stylesheet" />
-<script type="text/javascript" src="<?php echo base_url('js/jquery/jquery-1.7.1.min.js');?>"></script>
-<script type="text/javascript" src="<?php echo base_url('js/jquery/jquery-ui-1.8.16.custom.min.js');?>"></script>
+<link type="text/css" href="<?php echo base_url($this->config->item('assets_folder').'js/jquery/theme/smoothness/jquery-ui-1.8.16.custom.css');?>" rel="stylesheet" />
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/jquery-1.7.1.min.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/jquery-ui-1.8.16.custom.min.js');?>"></script>
 
-<link href="<?php echo base_url('js/jquery/colorbox/colorbox.css');?>" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?php echo base_url('js/jquery/colorbox/jquery.colorbox-min.js');?>"></script>
+<link href="<?php echo base_url($this->config->item('assets_folder').'js/jquery/colorbox/colorbox.css');?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/colorbox/jquery.colorbox-min.js');?>"></script>
 
-<script type="text/javascript" src="<?php echo base_url('js/jquery/tiny_mce/tiny_mce.js');?>"></script>
-<script type="text/javascript" src="<?php echo base_url('js/jquery/tiny_mce/tiny_mce_init.php');?>"></script>
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/tiny_mce/tiny_mce.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/tiny_mce/tiny_mce_init.php');?>"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -45,9 +45,9 @@ function buttons()
 <div id="wrapper">
 	<div id="header">
 		<div class="shine"></div>
-		<a href="<?php echo site_url($this->config->item('admin_folder').'/dashboard');?>"><img src="<?php echo base_url('images/admin/logo.png');?>" alt="dashboard"/></a>
+		<a href="<?php echo site_url($this->config->item('admin_folder').'/dashboard');?>"><img src="<?php echo base_url($this->config->item('assets_folder').'images/admin/logo.png');?>" alt="dashboard"/></a>
 		<h2><?php echo  $page_title; ?></h2>
-		
+
 		<span>
 			<a style="float:right;" href="<?php echo site_url($this->config->item('admin_folder').'/login/logout');?>"><?php echo lang('common_log_out') ?></a>
 			<a style="float:right;" href="<?php echo site_url();?>"><?php echo lang('common_front_end') ?></a>
@@ -58,17 +58,17 @@ function buttons()
 		<div id="menu_wrapper">
 			<?php
 			//just to shorten this up some.
-			$admin_url = site_url($this->config->item('admin_folder')).'/';?>
+			$admin_url = preg_replace('/\/shopping-cart\/admin_12\/html/', '', site_url($this->config->item('admin_folder'))).'/';?>
 			
 			<div class="menu shadow">
 				<div class="menu_title"><?php echo lang('common_sales') ?></div>
-				<a href="<?php echo $admin_url;?>orders"><?php echo lang('common_orders') ?></a>
+				<a href="<?php echo $admin_url;?>orders<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_orders') ?></a>
 				<?php if($this->auth->check_access('Admin')) : ?>
-				<a href="<?php echo $admin_url;?>customers"><?php echo lang('common_customers') ?></a>
-				<a href="<?php echo $admin_url;?>customers/groups"><?php echo lang('common_groups') ?></a>
-				<a href="<?php echo $admin_url;?>reports"><?php echo lang('common_reports') ?></a>
-				<a href="<?php echo $admin_url;?>coupons"><?php echo lang('common_coupons') ?></a>
-				<a href="<?php echo $admin_url;?>giftcards"><?php echo lang('common_giftcards') ?></a>
+				<a href="<?php echo $admin_url;?>customers<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_customers') ?></a>
+				<a href="<?php echo $admin_url;?>customers/groups<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_groups') ?></a>
+				<a href="<?php echo $admin_url;?>reports<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_reports') ?></a>
+				<a href="<?php echo $admin_url;?>coupons<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_coupons') ?></a>
+				<a href="<?php echo $admin_url;?>giftcards<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_giftcards') ?></a>
 				<?php endif; ?>
 			</div>
 			<?php
@@ -77,23 +77,23 @@ function buttons()
 			?>
 			<div class="menu shadow">
 				<div class="menu_title"><?php echo lang('common_catalog') ?></div>
-				<a href="<?php echo $admin_url;?>categories"><?php echo lang('common_categories') ?></a>
-				<a href="<?php echo $admin_url;?>products"><?php echo lang('common_products') ?></a>
-				<a href="<?php echo $admin_url;?>digital_products"><?php echo lang('common_digital_products') ?></a>
+				<a href="<?php echo $admin_url;?>categories<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_categories') ?></a>
+				<a href="<?php echo $admin_url;?>products<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_products') ?></a>
+				<a href="<?php echo $admin_url;?>digital_products<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_digital_products') ?></a>
 			</div>
 			
 			<div class="menu shadow">
 				<div class="menu_title"><?php echo lang('common_content') ?></div>
-				<a href="<?php echo $admin_url;?>banners"><?php echo lang('common_banners') ?></a>
-				<a href="<?php echo $admin_url;?>boxes"><?php echo lang('common_boxes') ?></a>
-				<a href="<?php echo $admin_url;?>pages"><?php echo lang('common_pages') ?></a>
+				<a href="<?php echo $admin_url;?>banners<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_banners') ?></a>
+				<a href="<?php echo $admin_url;?>boxes<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_boxes') ?></a>
+				<a href="<?php echo $admin_url;?>pages<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_pages') ?></a>
 			</div>
 	
 			<div class="menu shadow">
 				<div class="menu_title"><?php echo lang('common_administrative') ?></div>
-				<a href="<?php echo $admin_url;?>settings"><?php echo lang('common_settings') ?></a>
-				<a href="<?php echo $admin_url;?>locations"><?php echo lang('common_locations') ?></a>
-				<a href="<?php echo $admin_url;?>admin"><?php echo lang('common_administrators') ?></a>
+				<a href="<?php echo $admin_url;?>settings<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_settings') ?></a>
+				<a href="<?php echo $admin_url;?>locations<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_locations') ?></a>
+				<a href="<?php echo $admin_url;?>admin<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_administrators') ?></a>
 			</div>
 			<?php endif; ?>
 			

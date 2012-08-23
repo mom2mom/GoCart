@@ -1,6 +1,10 @@
 <?php
 Class Messages_model extends CI_Model
 {
+	/********************************************************************
+		Separate DB for FR and EN
+	********************************************************************/
+	
 	function __construct()
 	{
 			parent::__construct();

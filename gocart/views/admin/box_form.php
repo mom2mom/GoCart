@@ -31,7 +31,7 @@ $new_window		= array('name'=>'new_window', 'value'=>1, 'checked'=>set_checkbox('
 	<?php echo form_upload($f_image); ?>
 
 	<?php if($id && $image != ''):?>
-	<div style="text-align:center; padding:5px; border:1px solid #ccc;"><img src="<?php echo base_url('uploads/'.$image);?>" alt="current"/><br/><?php echo lang('current_file');?></div>
+	<div style="text-align:center; padding:5px; border:1px solid #ccc;"><img src="<?php echo base_url($this->config->item('img_upload_folder').'uploads/'.$image);?>" alt="current"/><br/><?php echo lang('current_file');?></div>
 	<?php endif;?>
 			
 	<div class="form-actions">

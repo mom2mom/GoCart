@@ -9,8 +9,8 @@
 <div class="row">
 	
 	<div class="span4 offset4 well">
-		<div style="text-align:center;">
-			<img src="<?php echo base_url('images/admin/login_logo.png');?>"/>
+		<div style="text-align:center; padding-bottom: 20px;">
+			<img src="<?php echo base_url($this->config->item('assets_folder').'images/admin/login_logo.png');?>"/>
 		</div>
 	
 	<?php echo form_open($this->config->item('admin_folder').'/login') ?>

@@ -46,7 +46,13 @@ class Coupon_model extends CI_Model
 	function add_coupon($data) 
 	{
 		$this->db->insert('coupons', $data);
-		return $this->db->insert_id();
+		$return_ID = $this->db->insert_id();
+		
+		$this->db->set_dbprefix('');
+		$this->db->insert('gc_en_coupons', $data);
+		$this->db->set_dbprefix('gc_fr_');
+		
+		return $return_ID;
 	}
 	
 	// update coupon
@@ -54,6 +60,11 @@ class Coupon_model extends CI_Model
 	{
 		$this->db->where('id', $id);
 		$this->db->update('coupons', $data);
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('id', $id);
+		$this->db->update('gc_en_coupons', $data);
+		$this->db->set_dbprefix('gc_fr_');
 	}
 	
 	// delete coupon
@@ -61,7 +72,12 @@ class Coupon_model extends CI_Model
 	{
 		$this->db->where('id', $id);
 		$this->db->delete('coupons');
-	
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('id', $id);
+		$this->db->delete('gc_en_coupons');
+		$this->db->set_dbprefix('gc_fr_');
+		
 		// delete children
 		$this->remove_product($id);
 	}
@@ -186,6 +202,11 @@ class Coupon_model extends CI_Model
 			
 		$this->db->where($where);
 		$this->db->delete('coupons_products');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where($where);
+		$this->db->delete('gc_en_coupons_products');
+		$this->db->set_dbprefix('gc_fr_');
 	}
 	
 	// get list of products in coupon with full info
@@ -217,6 +238,11 @@ class Coupon_model extends CI_Model
 	{
 		$this->db->where(array('coupon_id'=>$coupon_id, 'product_id'=>$prod_id));
 		$this->db->update('coupons_products', array('sequence'=>$seq));
+		
+		$this->db->set_dbprefix('');
+		$this->db->where(array('coupon_id'=>$coupon_id, 'product_id'=>$prod_id));
+		$this->db->update('gc_en_coupons_products', array('sequence'=>$seq));
+		$this->db->set_dbprefix('gc_fr_');
 	}
 	
 	

@@ -751,11 +751,9 @@ class go_cart {
 			// Shipping costs
 			if($this->_cart_contents['requires_shipping']) 
 			{
-				$this->_cart_contents['cart_total']		+= $this->_cart_contents['shipping']['price'];
+				$this->_cart_contents['cart_total']	+= $this->_cart_contents['shipping']['price'];
 				$this->_cart_contents['taxable_total']	+= $this->_cart_contents['shipping']['price'];
-			}
-			else
-			{
+			} else {
 				// placeholders
 				$this->_cart_contents['shipping']['method']	= false;  // defaults
 				$this->_cart_contents['shipping']['price']	= false;

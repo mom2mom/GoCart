@@ -43,7 +43,7 @@ function areyousure()
 			if (sizeof($cat['children']) > 0)
 			{
 				$sub2 = str_replace('&rarr;&nbsp;', '&nbsp;', $sub);
-					$sub2 .=  '&nbsp;&nbsp;&nbsp;&rarr;&nbsp;';
+				$sub2 .=  '&nbsp;&nbsp;&nbsp;&rarr;&nbsp;';
 				list_categories($cat['children'], $sub2);
 			}
 			endforeach;

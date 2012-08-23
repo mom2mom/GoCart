@@ -14,16 +14,22 @@ class Cart extends CI_Controller {
 	var $gift_cards_enabled; 
 	
 	var $header_text;
+	
+	var $header_urls;
+	
+	var $status_solde;
 
 	function __construct()
 	{
 		parent::__construct();
 		
+		//$this->output->enable_profiler(TRUE);
+		
 		//make sure we're not always behind ssl
 		remove_ssl();
 		
 		$this->load->library('Go_cart');
-		$this->load->model(array('Page_model', 'Product_model', 'Digital_Product_model', 'Gift_card_model', 'Option_model', 'Order_model', 'Settings_model'));
+		$this->load->model(array('Page_model', 'Product_model', 'Solde_model', 'Digital_Product_model', 'Gift_card_model', 'Option_model', 'Order_model', 'Settings_model', 'Category_model_mom2mom'));
 		$this->load->helper(array('form_helper', 'formatting_helper'));
 		
 		//fill in our variables
@@ -41,6 +47,10 @@ class Cart extends CI_Controller {
 			$this->gift_cards_enabled = false;
 		}
 		
+		$this->header_urls = $this->Category_model_mom2mom->get_header_urls();
+		$this->status_solde = $this->Solde_model->_getSoldeStatusData();
+		//$this->print_r_html($this->status_solde);
+		
 		//load the theme package
 		$this->load->add_package_path(APPPATH.'themes/'.$this->config->item('theme').'/');
 		
@@ -56,6 +66,9 @@ class Cart extends CI_Controller {
 		$data['boxes']				= $this->box_model->get_homepage_boxes(4);
 		$data['homepage']			= true;
 		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
+		
 		$this->load->view('homepage', $data);
 	}
 
@@ -68,16 +81,19 @@ class Cart extends CI_Controller {
 			show_404();
 		}
 		$this->load->model('Page_model');
-		$data['base_url']			= $this->uri->segment_array();
+		$data['base_url']	= $this->uri->segment_array();
 		
-		$data['fb_like']			= true;
-
-		$data['page_title']			= $data['page']->title;
+		$data['fb_like']	= true;
 		
-		$data['meta']				= $data['page']->meta;
-		$data['seo_title']			= $data['page']->seo_title;
+		$data['page_title']	= $data['page']->title;
+		
+		$data['meta']	= $data['page']->meta;
+		$data['seo_title']	= $data['page']->seo_title;
 		
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
+		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
 		
 		$this->load->view('page', $data);
 	}
@@ -106,7 +122,6 @@ class Cart extends CI_Controller {
 		if(empty($term))
 		{
 			//if there is still no search term throw an error
-			//if there is still no search term throw an error
 			$this->session->set_flashdata('error', lang('search_error'));
 			redirect('cart');
 		}
@@ -132,7 +147,9 @@ class Cart extends CI_Controller {
 			}
 		}
 		
-
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
+		
 		if(empty($term))
 		{
 			//if there is still no search term throw an error
@@ -215,6 +232,14 @@ class Cart extends CI_Controller {
 		$data['base_url']	= $base_url;
 		$base_url			= implode('/', $base_url);
 		
+		//breadcrumb
+		$base_url_slugs_array = $this->uri->segment_array();
+		for($count=1; $count < count($base_url_slugs_array)+1 ; $count+=1)
+		{
+			$slugs_array[] = $base_url_slugs_array[$count];
+		}
+		$data['base_url_slugs_to_names'] = $this->Category_model_mom2mom->get_base_url_slugs_to_names($slugs_array);
+		
 		$data['subcategories']		= $this->Category_model->get_categories($data['category']->id);
 		$data['product_columns']	= $this->config->item('product_columns');
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
@@ -280,6 +305,9 @@ class Cart extends CI_Controller {
 			$p->options	= $this->Option_model->get_product_options($p->id);
 		}
 		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
+		
 		$this->load->view('category', $data);
 	}
 	
@@ -322,6 +350,9 @@ class Cart extends CI_Controller {
 		}
 
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
+		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
 					
 		$this->load->view('product', $data);
 	}
@@ -402,6 +433,9 @@ class Cart extends CI_Controller {
 		
 		$data['page_title']	= 'View Cart';
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
+		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
 		
 		$this->load->view('view_cart', $data);
 	}
@@ -597,5 +631,11 @@ class Cart extends CI_Controller {
 			
 			redirect('cart/view_cart');
 		}
+	}
+	
+	function print_r_html ($arr) {
+	        ?><pre><?
+	        print_r($arr);
+	        ?></pre><?
 	}
 }

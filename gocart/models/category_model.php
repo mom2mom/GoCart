@@ -1,7 +1,10 @@
 <?php
 Class Category_model extends CI_Model
 {
-
+	/********************************************************************
+		Separate DB for FR and EN
+	********************************************************************/
+	
 	function get_categories($parent = false)
 	{
 		if ($parent !== false)
@@ -124,5 +127,5 @@ Class Category_model extends CI_Model
 		//delete references to this category in the product to category table
 		$this->db->where('category_id', $id);
 		$this->db->delete('category_products');
-	}
+	}	
 }

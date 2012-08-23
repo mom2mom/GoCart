@@ -13,7 +13,7 @@
 | path to your installation.
 |
 */
-$config['base_url']			= '';
+$config['base_url']			= 'http://localhost/';
 
 
 
@@ -58,7 +58,7 @@ $config['uri_protocol']	= 'PATH_INFO';
 | http://codeigniter.com/user_guide/general/urls.html
 */
 
-$config['url_suffix'] = '';
+$config['url_suffix'] = '/shopping-cart/html';
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +70,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language']	= 'french';
 
 /*
 |--------------------------------------------------------------------------
@@ -225,7 +225,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'default encryption key';
+$config['encryption_key'] = '4a577c14592f08bb5790917ac54ee9c7';
 
 /*
 |--------------------------------------------------------------------------

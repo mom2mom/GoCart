@@ -7,9 +7,17 @@ so this method is getting changed to make query strings only if it's configured 
 */
 class MY_Pagination extends CI_Pagination
 {
+	var $sulfi_url;
+	var $sulfi_url_string;
+	
+	
 	function __construct()
 	{
 		parent::__construct();
+		
+		$CI =& get_instance();
+		$this->sulfi_url = $CI->config->item('url_suffix');
+		$this->sulfi_url_escape_string = preg_replace('/\//', '\/' , $this->sulfi_url);
 	}
 	
 	// --------------------------------------------------------------------
@@ -116,7 +124,11 @@ class MY_Pagination extends CI_Pagination
 		// Render the "First" link
 		if  ($this->cur_page > ($this->num_links + 1))
 		{
-			$output .= $this->first_tag_open.'<a href="'.$this->base_url.$get_sort.'">'.$this->first_link.'</a>'.$this->first_tag_close;
+			//$output .= $this->first_tag_open.'<a href="'.$this->base_url.$get_sort.'">'.$this->first_link.'</a>'.$this->first_tag_close;
+			$current_url = $this->base_url;
+			//echo $this->sulfi_url;
+			$this_base_url_string = preg_replace("/" . $this->sulfi_url_escape_string . "/", '' , $this->base_url);
+			$output .= $this->first_tag_open.'<a href="'.$this_base_url_string.'/'.$get_sort.$this->sulfi_url.'">'.$this->first_link.'</a>'.$this->first_tag_close;
 		}
 
 		// Render the "previous" link
@@ -124,7 +136,9 @@ class MY_Pagination extends CI_Pagination
 		{
 			$i = $uri_page_number - $this->per_page;
 			if ($i == 0) $i = '';
-			$output .= $this->prev_tag_open.'<a href="'.$this->base_url.$i.$get_sort.'">'.$this->prev_link.'</a>'.$this->prev_tag_close;
+			//$output .= $this->prev_tag_open.'<a href="'.$this->base_url.$i.$get_sort.'">'.$this->prev_link.'</a>'.$this->prev_tag_close;
+			$this_base_url_string = preg_replace("/" . $this->sulfi_url_escape_string . "/", '' , $this->base_url);
+			$output .= $this->prev_tag_open.'<a href="'.$this_base_url_string.'/'.$i.$get_sort.$this->sulfi_url.'">'.$this->prev_link.'</a>'.$this->prev_tag_close;
 		}
 
 		// Write the digit links
@@ -141,7 +155,9 @@ class MY_Pagination extends CI_Pagination
 				else
 				{
 					$n = ($i == 0) ? '' : $i;
-					$output .= $this->num_tag_open.'<a href="'.$this->base_url.$n.$get_sort.'">'.$loop.'</a>'.$this->num_tag_close;
+					//$output .= $this->num_tag_open.'<a href="'.$this->base_url.$n.$get_sort.'">'.$loop.'</a>'.$this->num_tag_close;
+					$this_base_url_string = preg_replace("/" . $this->sulfi_url_escape_string . "/", '' , $this->base_url);
+					$output .= $this->num_tag_open.'<a href="'.$this_base_url_string.'/'.$n.$get_sort.$this->sulfi_url.'">'.$loop.'</a>'.$this->num_tag_close;
 				}
 			}
 		}
@@ -149,14 +165,18 @@ class MY_Pagination extends CI_Pagination
 		// Render the "next" link
 		if ($this->cur_page < $num_pages)
 		{
-			$output .= $this->next_tag_open.'<a href="'.$this->base_url.($this->cur_page * $this->per_page).$get_sort.'">'.$this->next_link.'</a>'.$this->next_tag_close;
+			//$output .= $this->next_tag_open.'<a href="'.$this->base_url.($this->cur_page * $this->per_page).$get_sort.'">'.$this->next_link.'</a>'.$this->next_tag_close;
+			$this_base_url_string = preg_replace("/" . $this->sulfi_url_escape_string . "/", '' , $this->base_url);
+			$output .= $this->next_tag_open.'<a href="'.$this_base_url_string.'/'.($this->cur_page * $this->per_page).$get_sort.$this->sulfi_url.'">'.$this->next_link.'</a>'.$this->next_tag_close;
 		}
 
 		// Render the "Last" link
 		if (($this->cur_page + $this->num_links) < $num_pages)
 		{
 			$i = (($num_pages * $this->per_page) - $this->per_page);
-			$output .= $this->last_tag_open.'<a href="'.$this->base_url.$i.$get_sort.'">'.$this->last_link.'</a>'.$this->last_tag_close;
+			//$output .= $this->last_tag_open.'<a href="'.$this->base_url.$i.$get_sort.'">'.$this->last_link.'</a>'.$this->last_tag_close;
+			$this_base_url_string = preg_replace("/" . $this->sulfi_url_escape_string . "/", '' , $this->base_url);
+			$output .= $this->last_tag_open.'<a href="'.$this_base_url_string.'/'.$i.$get_sort.$this->sulfi_url.'">'.$this->last_link.'</a>'.$this->last_tag_close;
 		}
 
 		// Kill double slashes.  Note: Sometimes we can end up with a double slash

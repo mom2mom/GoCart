@@ -4,10 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Go Cart<?php echo (isset($page_title))?' :: '.$page_title:''; ?></title>
 
-<link href="<?php echo base_url('assets/css/bootstrap.css');?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('assets/css/bootstrap-responsive.css');?>" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?php echo base_url('js/jquery/jquery-1.7.2.min.js');?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.min.js');?>"></script>
+<link href="<?php echo base_url($this->config->item('assets_folder').'assets/css/bootstrap.css');?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url($this->config->item('assets_folder').'assets/css/bootstrap-responsive.css');?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/jquery-1.7.2.min.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'assets/js/bootstrap.min.js');?>"></script>
+
+<!-- 
+<link rel="stylesheet" href="http://mom2mom.fr/Content/Assets/Stylesheets/skeleton/base.css" type="text/css"/>
+<link rel="stylesheet" href="http://mom2mom.fr/Content/Assets/Stylesheets/skeleton/layout.css" type="text/css"/>
+<link rel="stylesheet" href="http://mom2mom.fr/Content/Assets/Stylesheets/skeleton/skeleton.css" type="text/css"/>
+<link rel="stylesheet" href="http://mom2mom.fr/Content/Assets/Stylesheets/mom2mom_general.css" type="text/css"/>
+<link rel="stylesheet" href="http://mom2mom.fr/Content/Assets/Stylesheets/mom2mom_fr.css" type="text/css"/>
+-->
+
+<link href="<?php echo base_url($this->config->item('assets_folder').'js/jquery/theme/gocart/jquery-ui-1.8.19.custom.css');?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/jquery-ui-1.8.19.custom.min.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/tiny_mce/tiny_mce.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url($this->config->item('assets_folder').'js/jquery/tiny_mce/tiny_mce_init.php');?>"></script>
 
 <?php if($this->auth->is_logged_in(false, false)):?>
 	
@@ -19,11 +32,6 @@ if(isset($_SERVER['HTTPS']))
 	$http .= 's';
 }
 ?>
-
-<link type="text/css" href="<?php echo base_url('js/jquery/theme/gocart/jquery-ui-1.8.19.custom.css');?>" rel="stylesheet" />
-<script type="text/javascript" src="<?php echo base_url('js/jquery/jquery-ui-1.8.19.custom.min.js');?>"></script>
-<script type="text/javascript" src="<?php echo base_url('js/jquery/tiny_mce/tiny_mce.js');?>"></script>
-<script type="text/javascript" src="<?php echo base_url('js/jquery/tiny_mce/tiny_mce_init.php');?>"></script>
 
 <style type="text/css">
 	body {
@@ -56,7 +64,7 @@ if(isset($_SERVER['HTTPS']))
 		text-shadow: 0px 1px 0px #fff;
 		filter: dropshadow(color=#fff, offx=0, offy=1);
 	}
-
+	
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -64,6 +72,7 @@ $(document).ready(function(){
 });
 </script>
 <?php endif;?>
+<base href="<?php echo base_url(); ?>" />
 </head>
 <body>
 <?php if($this->auth->is_logged_in(false, false)):?>
@@ -76,23 +85,23 @@ $(document).ready(function(){
 				<span class="icon-bar"></span>
 			</a>
 			
-			<?php $admin_url = site_url($this->config->item('admin_folder')).'/';?>
+			<?php $admin_url = preg_replace('/\/shopping-cart\/html/', '', site_url($this->config->item('admin_folder'))).'/';?>
 			
-			<a class="brand" href="<?php echo $admin_url;?>">GoCart</a>
+			<a class="brand" href="<?php echo ($admin_url . 'shopping-cart/html');?>">Mom To Mom | eCommerce</a>
 			
 			<div class="nav-collapse">
 				<ul class="nav">
-					<li><a href="<?php echo $admin_url;?>">Home</a></li>
+					<li><a href="<?php echo ($admin_url . 'shopping-cart/html');?>">Home</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_sales') ?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="<?php echo $admin_url;?>orders"><?php echo lang('common_orders') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>orders<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_orders') ?></a></li>
 							<?php if($this->auth->check_access('Admin')) : ?>
-							<li><a href="<?php echo $admin_url;?>customers"><?php echo lang('common_customers') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>customers/groups"><?php echo lang('common_groups') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>reports"><?php echo lang('common_reports') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>coupons"><?php echo lang('common_coupons') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>giftcards"><?php echo lang('common_giftcards') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>customers<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_customers') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>customers/groups<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_groups') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>reports<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_reports') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>coupons<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_coupons') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>giftcards<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_giftcards') ?></a></li>
 							<?php endif; ?>
 						</ul>
 					</li>
@@ -105,27 +114,27 @@ $(document).ready(function(){
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_catalog') ?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="<?php echo $admin_url;?>categories"><?php echo lang('common_categories') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>products"><?php echo lang('common_products') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>digital_products"><?php echo lang('common_digital_products') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>categories<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_categories') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>products<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_products') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>digital_products<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_digital_products') ?></a></li>
 						</ul>
 					</li>
 					
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_content') ?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="<?php echo $admin_url;?>banners"><?php echo lang('common_banners') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>boxes"><?php echo lang('common_boxes') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>pages"><?php echo lang('common_pages') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>banners<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_banners') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>boxes<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_boxes') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>pages<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_pages') ?></a></li>
 						</ul>
 					</li>
 					
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo lang('common_administrative') ?> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="<?php echo $admin_url;?>settings"><?php echo lang('common_settings') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>locations"><?php echo lang('common_locations') ?></a></li>
-							<li><a href="<?php echo $admin_url;?>admin"><?php echo lang('common_administrators') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>settings<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_settings') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>locations<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_locations') ?></a></li>
+							<li><a href="<?php echo $admin_url;?>admin<?php echo $this->config->item('url_suffix');?>"><?php echo lang('common_administrators') ?></a></li>
 						</ul>
 					</li>
 					<?php endif; ?>
@@ -135,7 +144,7 @@ $(document).ready(function(){
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<?php echo site_url($this->config->item('admin_folder').'/dashboard');?>"><?php echo lang('common_dashboard') ?></a></li>
-							<li><a href="<?php echo site_url();?>"><?php echo lang('common_front_end') ?></a></li>
+							<li><a href="<?php echo (site_url().'html');?>"><?php echo lang('common_front_end') ?></a></li>
 							<li><a href="<?php echo site_url($this->config->item('admin_folder').'/login/logout');?>"><?php echo lang('common_log_out') ?></a></li>
 						</ul>
 					</li>

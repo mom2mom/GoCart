@@ -2,6 +2,12 @@
 .htaccess
 uploads/*
 database.php
-config.php
+*config.php
 gocart.php
 *.bak
+*/config/config.php
+*/config/development
+*/logs/log-*.php
+*/logs/!index.html
+*/cache/*
+*/cache/!index.html

@@ -151,7 +151,18 @@ class Routes_model extends CI_Model {
 		$routes	= array();
 		foreach($all as $route)
 		{
-			$routes[$route['slug']]	= $route['route'];
+			$routes[$route['slug']]	= $route['route'];	
+			
+			/*
+			if($this->config->item('language') == 'english')
+			{
+				$routes[$route['slug']]	= $route['route'];	
+			}
+			else if ($this->config->item('language') == 'french')
+			{
+				$routes[$route['slug_en']]	= $route['route'];	
+			}
+			*/
 		}
 		
 		return $routes;

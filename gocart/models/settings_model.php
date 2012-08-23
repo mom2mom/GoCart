@@ -45,12 +45,23 @@ Class Settings_model extends CI_Model
 				$this->db->where('code', $code);
 				$this->db->where('setting_key',$key);
 				$this->db->update('settings', $update);
+				
+				$this->db->set_dbprefix('');
+				$this->db->where('code', $code);
+				$this->db->where('setting_key',$key);
+				$this->db->update('gc_fr_settings', $update);
+				$this->db->set_dbprefix('gc_en_');
 			}
 			//if the key does not exist, add it
 			else
 			{
 				$insert	= array('code'=>$code, 'setting_key'=>$key, 'setting'=>$value);
 				$this->db->insert('settings', $insert);
+				
+				$this->db->set_dbprefix('');
+				$insert	= array('code'=>$code, 'setting_key'=>$key, 'setting'=>$value);
+				$this->db->insert('gc_fr_settings', $insert);
+				$this->db->set_dbprefix('gc_en_');
 			}
 			
 		}
@@ -62,6 +73,11 @@ Class Settings_model extends CI_Model
 	{
 		$this->db->where('code', $code);
 		$this->db->delete('settings');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('code', $code);
+		$this->db->delete('gc_fr_settings');
+		$this->db->set_dbprefix('gc_en_');
 	}
 	
 	//this deletes a specific setting
@@ -70,5 +86,11 @@ Class Settings_model extends CI_Model
 		$this->db->where('code', $code);
 		$this->db->where('setting_key', $setting_key);
 		$this->db->delete('settings');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('code', $code);
+		$this->db->where('setting_key', $setting_key);
+		$this->db->delete('gc_fr_settings');
+		$this->db->set_dbprefix('gc_en_');
 	}
 }

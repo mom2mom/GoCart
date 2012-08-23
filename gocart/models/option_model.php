@@ -1,6 +1,10 @@
 <?php
 Class Option_model extends CI_Model
 {
+	/********************************************************************
+		Separate DB for FR and EN
+	********************************************************************/
+	
 	function __construct()
 	{
 		parent::__construct();

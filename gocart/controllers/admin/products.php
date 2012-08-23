@@ -329,12 +329,17 @@ class Products extends Admin_Controller {
 		$data['file_name'] = false;
 		$data['error']	= false;
 		
-		$config['allowed_types'] = 'gif|jpg|png';
+		$config['allowed_types'] = 'gif|jpg|jpeg|png';
 		//$config['max_size']	= $this->config->item('size_limit');
-		$config['upload_path'] = 'uploads/images/full';
+		//$config['upload_path'] = 'uploads/images/full';
+		//$config['upload_path'] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/full';
+		$config['upload_path'] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/full';
 		$config['encrypt_name'] = true;
 		$config['remove_spaces'] = true;
-
+		
+		//echo ($this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/full');
+		//echo (FCPATH.$this->config->item('img_upload_folder').'uploads/images/full');
+		
 		$this->load->library('upload', $config);
 		
 		if ( $this->upload->do_upload())
@@ -357,19 +362,27 @@ class Products extends Admin_Controller {
 			
 			//this is the larger image
 			$config['image_library'] = 'gd2';
-			$config['source_image'] = 'uploads/images/full/'.$upload_data['file_name'];
-			$config['new_image']	= 'uploads/images/medium/'.$upload_data['file_name'];
+			//$config['source_image'] = 'uploads/images/full/'.$upload_data['file_name'];
+			//$config['new_image']	= 'uploads/images/medium/'.$upload_data['file_name'];
+			//$config['source_image'] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/full/'.$upload_data['file_name'];
+			//$config['new_image']	= $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/medium/'.$upload_data['file_name'];
+			$config['source_image'] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/full/'.$upload_data['file_name'];
+			$config['new_image']	= FCPATH.$this->config->item('img_upload_folder').'uploads/images/medium/'.$upload_data['file_name'];
 			$config['maintain_ratio'] = TRUE;
 			$config['width'] = 600;
-			$config['height'] = 500;
+			$config['height'] = 600;
 			$this->image_lib->initialize($config);
 			$this->image_lib->resize();
 			$this->image_lib->clear();
 
 			//small image
 			$config['image_library'] = 'gd2';
-			$config['source_image'] = 'uploads/images/medium/'.$upload_data['file_name'];
-			$config['new_image']	= 'uploads/images/small/'.$upload_data['file_name'];
+			//$config['source_image'] = 'uploads/images/medium/'.$upload_data['file_name'];
+			//$config['new_image']	= 'uploads/images/small/'.$upload_data['file_name'];
+			//$config['source_image'] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/medium/'.$upload_data['file_name'];
+			//$config['new_image']	= $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/small/'.$upload_data['file_name'];
+			$config['source_image'] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/medium/'.$upload_data['file_name'];
+			$config['new_image']	= FCPATH.$this->config->item('img_upload_folder').'uploads/images/small/'.$upload_data['file_name'];
 			$config['maintain_ratio'] = TRUE;
 			$config['width'] = 235;
 			$config['height'] = 235;
@@ -379,8 +392,12 @@ class Products extends Admin_Controller {
 
 			//cropped thumbnail
 			$config['image_library'] = 'gd2';
-			$config['source_image'] = 'uploads/images/small/'.$upload_data['file_name'];
-			$config['new_image']	= 'uploads/images/thumbnails/'.$upload_data['file_name'];
+			//$config['source_image'] = 'uploads/images/small/'.$upload_data['file_name'];
+			//$config['new_image']	= 'uploads/images/thumbnails/'.$upload_data['file_name'];
+			//$config['source_image'] = $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/small/'.$upload_data['file_name'];
+			//$config['new_image']	= $this->config->item('base_url').$this->config->item('img_upload_folder').'uploads/images/thumbnails/'.$upload_data['file_name'];
+			$config['source_image'] = FCPATH.$this->config->item('img_upload_folder').'uploads/images/small/'.$upload_data['file_name'];
+			$config['new_image']	= FCPATH.$this->config->item('img_upload_folder').'uploads/images/thumbnails/'.$upload_data['file_name'];
 			$config['maintain_ratio'] = TRUE;
 			$config['width'] = 150;
 			$config['height'] = 150;

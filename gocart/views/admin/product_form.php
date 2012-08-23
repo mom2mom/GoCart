@@ -576,7 +576,7 @@ function add_image($photo_id, $filename, $alt, $caption, $primary=false)
 			<tr>
 				<td style="width:81px;padding-right:10px;" rowspan="2">
 					<input type="hidden" name="images[<?php echo $photo_id;?>][filename]" value="<?php echo $filename;?>"/>
-					<img class="gc_thumbnail" src="<?php echo base_url('uploads/images/thumbnails/'.$filename);?>"/>
+					<img class="gc_thumbnail" src="<?php echo base_url(IMG_UPLOAD_FOLDER.'uploads/images/thumbnails/'.$filename);?>"/>
 				</td>
 				<td>
 					<input type="radio" name="primary_image" value="<?php echo $photo_id;?>" <?php if($primary) echo 'checked="checked"';?>/> <?php echo lang('primary');?>

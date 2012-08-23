@@ -171,9 +171,20 @@ Class order_model extends CI_Model
 		$this->db->where('id', $id);
 		$this->db->delete('orders');
 		
+		$this->db->set_dbprefix('');
+		$this->db->where('id', $id);
+		$this->db->delete('gc_fr_orders');
+		$this->db->set_dbprefix('gc_en_');
+		
+		
 		//now delete the order items
 		$this->db->where('order_id', $id);
 		$this->db->delete('order_items');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('order_id', $id);
+		$this->db->delete('gc_fr_order_items');
+		$this->db->set_dbprefix('gc_en_');
 	}
 	
 	function save_order($data, $contents = false)
@@ -184,6 +195,11 @@ Class order_model extends CI_Model
 			$this->db->update('orders', $data);
 			$id = $data['id'];
 			
+			$this->db->set_dbprefix('');
+			$this->db->where('id', $data['id']);
+			$this->db->update('gc_fr_orders', $data);
+			$this->db->set_dbprefix('gc_en_');
+			
 			// we don't need the actual order number for an update
 			$order_number = $id;
 		}
@@ -192,6 +208,10 @@ Class order_model extends CI_Model
 			$this->db->insert('orders', $data);
 			$id = $this->db->insert_id();
 			
+			$this->db->set_dbprefix('');
+			$this->db->insert('gc_fr_orders', $data);
+			$this->db->set_dbprefix('gc_en_');
+			
 			//create a unique order number
 			//unix time stamp + unique id of the order just submitted.
 			$order	= array('order_number'=> date('U').$id);
@@ -199,6 +219,11 @@ Class order_model extends CI_Model
 			//update the order with this order id
 			$this->db->where('id', $id);
 			$this->db->update('orders', $order);
+			
+			$this->db->set_dbprefix('');
+			$this->db->where('id', $id);
+			$this->db->update('gc_fr_orders', $order);
+			$this->db->set_dbprefix('gc_en_');
 						
 			//return the order id we generated
 			$order_number = $order['order_number'];
@@ -209,6 +234,11 @@ Class order_model extends CI_Model
 		{
 			// clear existing order items
 			$this->db->where('order_id', $id)->delete('order_items');
+			
+			$this->db->set_dbprefix('');
+			$this->db->where('order_id', $id)->delete('gc_fr_order_items');
+			$this->db->set_dbprefix('gc_en_');
+			
 			// update order items
 			foreach($contents as $item)
 			{
@@ -220,6 +250,10 @@ Class order_model extends CI_Model
 				$save['quantity'] 	= $item['quantity'];
 				$save['order_id']	= $id;
 				$this->db->insert('order_items', $save);
+				
+				$this->db->set_dbprefix('');
+				$this->db->insert('gc_fr_order_items', $save);
+				$this->db->set_dbprefix('gc_en_');
 			}
 		}
 		
@@ -233,6 +267,11 @@ Class order_model extends CI_Model
 		{
 			$this->db->where('id', $data['id']);
 			$this->db->update('items', $data);
+			
+			$this->db->set_dbprefix('');
+			$this->db->where('id', $data['id']);
+			$this->db->update('gc_fr_items', $data);
+			$this->db->set_dbprefix('gc_en_');
 			
 			return $data['id'];
 		}

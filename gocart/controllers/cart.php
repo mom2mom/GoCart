@@ -14,6 +14,10 @@ class Cart extends CI_Controller {
 	var $gift_cards_enabled; 
 	
 	var $header_text;
+	
+	var $header_urls;
+	
+	var $status_solde;
 
 	function __construct()
 	{
@@ -23,7 +27,7 @@ class Cart extends CI_Controller {
 		remove_ssl();
 		
 		$this->load->library('Go_cart');
-		$this->load->model(array('Page_model', 'Product_model', 'Digital_Product_model', 'Gift_card_model', 'Option_model', 'Order_model', 'Settings_model'));
+		$this->load->model(array('Page_model', 'Product_model', 'Solde_model', 'Digital_Product_model', 'Gift_card_model', 'Option_model', 'Order_model', 'Settings_model'));
 		$this->load->helper(array('form_helper', 'formatting_helper'));
 		
 		//fill in our variables
@@ -41,6 +45,10 @@ class Cart extends CI_Controller {
 			$this->gift_cards_enabled = false;
 		}
 		
+		$this->header_urls = $this->Category_model->get_header_urls();
+		$this->status_solde = $this->Solde_model->_getSoldeStatusData();
+		//$this->print_r_html($this->status_solde);
+		
 		//load the theme package
 		$this->load->add_package_path(APPPATH.'themes/'.$this->config->item('theme').'/');
 		
@@ -55,6 +63,9 @@ class Cart extends CI_Controller {
 		$data['banners']			= $this->Banner_model->get_homepage_banners(5);
 		$data['boxes']				= $this->box_model->get_homepage_boxes(4);
 		$data['homepage']			= true;
+		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
 		
 		$this->load->view('homepage', $data);
 	}
@@ -71,6 +82,9 @@ class Cart extends CI_Controller {
 		$data['seo_title']			= $data['page']->seo_title;
 		
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
+		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
 		
 		$this->load->view('page', $data);
 	}
@@ -92,7 +106,10 @@ class Cart extends CI_Controller {
 			//if we have the md5 string, get the term
 			$term	= $this->Search_model->get_term($code);
 		}
-
+		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
+		
 		if(empty($term))
 		{
 			//if there is still no search term throw an error
@@ -159,6 +176,9 @@ class Cart extends CI_Controller {
 			$p->options	= $this->Option_model->get_product_options($p->id);
 		}
 		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
+		
 		$this->load->view('category', $data);
 	}
 	
@@ -207,6 +227,9 @@ class Cart extends CI_Controller {
 
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
 					
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
+		
 		$this->load->view('product', $data);
 	}
 	
@@ -286,6 +309,9 @@ class Cart extends CI_Controller {
 		
 		$data['page_title']	= 'View Cart';
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
+		
+		$data['header_urls'] = $this->header_urls;
+		$data['status_solde'] = $this->status_solde;
 		
 		$this->load->view('view_cart', $data);
 	}
@@ -481,5 +507,11 @@ class Cart extends CI_Controller {
 			
 			redirect('cart/view_cart');
 		}
+	}
+	
+	function print_r_html ($arr) {
+	        ?><pre><?
+	        print_r($arr);
+	        ?></pre><?
 	}
 }

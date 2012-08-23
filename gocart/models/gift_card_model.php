@@ -38,6 +38,12 @@ class Gift_card_model extends CI_Model
 				$this->db->where('code', $code);
 				$this->db->set('amount_used', $card['amt_used']);
 				$this->db->update('gift_cards');
+				
+				$this->db->set_dbprefix('');
+				$this->db->where('code', $code);
+				$this->db->set('amount_used', $card['amt_used']);
+				$this->db->update('gc_fr_gift_cards');
+				$this->db->set_dbprefix('gc_en_');
 			}
 		}
 	}
@@ -47,12 +53,23 @@ class Gift_card_model extends CI_Model
 		$this->db->where('code', $code);
 		$this->db->set('activated', '1');
 		$this->db->update('gift_cards');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('code', $code);
+		$this->db->set('activated', '1');
+		$this->db->update('gc_fr_gift_cards');
+		$this->db->set_dbprefix('gc_en_');
 	}
 	
 	function delete($id)
 	{
 		$this->db->where('id', $id);
 		$this->db->delete('gift_cards');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('id', $id);
+		$this->db->delete('gc_fr_gift_cards');
+		$this->db->set_dbprefix('gc_en_');
 	}
 		
 	function get_all_new() 
@@ -69,6 +86,10 @@ class Gift_card_model extends CI_Model
 	function save_card($data) 
 	{
 		$this->db->insert('gift_cards', $data);
+		
+		$this->db->set_dbprefix('');
+		$this->db->insert('gc_fr_gift_cards', $data);
+		$this->db->set_dbprefix('gc_en_');
 	}
 	
 	function get_balance($card)
@@ -119,7 +140,14 @@ class Gift_card_model extends CI_Model
 		$this->db->where('code', $code);
 		$res = $this->db->get('gift_cards');
 		$row = $res->row();
-		return (bool) $row->activated;
+		if($row)
+		{
+			return (bool) $row->activated;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 

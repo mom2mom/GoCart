@@ -37,5 +37,8 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
+define('ASSETS_FOLDER',			'Content/Assets/GoCart/2.0/');
+define('IMG_UPLOAD_FOLDER',		'img/');
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

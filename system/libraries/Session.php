@@ -71,7 +71,10 @@ class CI_Session {
 		{
 			show_error('In order to use the Session class you are required to set an encryption key in your config file.');
 		}
-
+		
+		// Load the user agent helper class to detect robots
+		$this->CI->load->library('user_agent');
+		
 		// Load the string helper so we can use the strip_slashes() function
 		$this->CI->load->helper('string');
 
@@ -287,7 +290,12 @@ class CI_Session {
 		// Run the update query
 		$this->CI->db->where('session_id', $this->userdata['session_id']);
 		$this->CI->db->update($this->sess_table_name, array('last_activity' => $this->userdata['last_activity'], 'user_data' => $custom_userdata));
-
+		
+		$this->CI->db->set_dbprefix('');
+		$this->CI->db->where('session_id', $this->userdata['session_id']);
+		$this->CI->db->update('gc_en_sessions', array('last_activity' => $this->userdata['last_activity'], 'user_data' => $custom_userdata));
+		$this->CI->db->set_dbprefix('gc_fr_');
+		
 		// Write the cookie.  Notice that we manually pass the cookie data array to the
 		// _set_cookie() function. Normally that function will store $this->userdata, but
 		// in this case that array contains custom data, which we do not want in the cookie.
@@ -325,7 +333,14 @@ class CI_Session {
 		// Save the data to the DB if needed
 		if ($this->sess_use_database === TRUE)
 		{
-			$this->CI->db->query($this->CI->db->insert_string($this->sess_table_name, $this->userdata));
+			if (!$this->CI->agent->is_robot())
+			{
+				$this->CI->db->query($this->CI->db->insert_string($this->sess_table_name, $this->userdata));
+			
+				$this->CI->db->set_dbprefix('');
+				$this->CI->db->query($this->CI->db->insert_string('gc_en_sessions', $this->userdata));
+				$this->CI->db->set_dbprefix('gc_fr_');
+			}
 		}
 
 		// Write the cookie
@@ -382,6 +397,10 @@ class CI_Session {
 			}
 
 			$this->CI->db->query($this->CI->db->update_string($this->sess_table_name, array('last_activity' => $this->now, 'session_id' => $new_sessid), array('session_id' => $old_sessid)));
+			
+			$this->CI->db->set_dbprefix('');
+			$this->CI->db->query($this->CI->db->update_string('gc_en_sessions', array('last_activity' => $this->now, 'session_id' => $new_sessid), array('session_id' => $old_sessid)));
+			$this->CI->db->set_dbprefix('gc_fr_');
 		}
 
 		// Write the cookie
@@ -403,6 +422,11 @@ class CI_Session {
 		{
 			$this->CI->db->where('session_id', $this->userdata['session_id']);
 			$this->CI->db->delete($this->sess_table_name);
+			
+			$this->CI->db->set_dbprefix('');
+			$this->CI->db->where('session_id', $this->userdata['session_id']);
+			$this->CI->db->delete('gc_en_sessions');
+			$this->CI->db->set_dbprefix('gc_fr_');
 		}
 
 		// Kill the cookie
@@ -764,7 +788,12 @@ class CI_Session {
 
 			$this->CI->db->where("last_activity < {$expire}");
 			$this->CI->db->delete($this->sess_table_name);
-
+			
+			$this->CI->db->set_dbprefix('');
+			$this->CI->db->where("last_activity < {$expire}");
+			$this->CI->db->delete('gc_en_sessions');
+			$this->CI->db->set_dbprefix('gc_fr_');
+			
 			log_message('debug', 'Session garbage collection performed.');
 		}
 	}

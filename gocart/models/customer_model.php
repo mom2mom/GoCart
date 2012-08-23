@@ -82,9 +82,20 @@ Class Customer_model extends CI_Model
 		{
 			$this->db->where('id', $data['id']);
 			$this->db->update('customers_address_bank', $data);
+			
+			$this->db->set_dbprefix('');
+			$this->db->where('id', $data['id']);
+			$this->db->update('gc_fr_customers_address_bank', $data);
+			$this->db->set_dbprefix('gc_en_');
+			
 			return $data['id'];
 		} else {
 			$this->db->insert('customers_address_bank', $data);
+			
+			$this->db->set_dbprefix('');
+			$this->db->insert('gc_fr_customers_address_bank', $data);
+			$this->db->set_dbprefix('gc_en_');
+			
 			return $this->db->insert_id();
 		}
 	}
@@ -92,6 +103,11 @@ Class Customer_model extends CI_Model
 	function delete_address($id, $customer_id)
 	{
 		$this->db->where(array('id'=>$id, 'customer_id'=>$customer_id))->delete('customers_address_bank');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where(array('id'=>$id, 'customer_id'=>$customer_id))->delete('gc_fr_customers_address_bank');
+		$this->db->set_dbprefix('gc_en_');
+		
 		return $id;
 	}
 	
@@ -101,11 +117,23 @@ Class Customer_model extends CI_Model
 		{
 			$this->db->where('id', $customer['id']);
 			$this->db->update('customers', $customer);
+			
+			$this->db->set_dbprefix('');
+			$this->db->where('id', $customer['id']);
+			$this->db->update('gc_fr_customers', $customer);
+			$this->db->set_dbprefix('gc_en_');
+		
 			return $customer['id'];
 		}
 		else
 		{
 			$this->db->insert('customers', $customer);
+			
+			$this->db->set_dbprefix('');
+			$this->db->where('id', $customer['id']);
+			$this->db->insert('gc_fr_customers', $customer);
+			$this->db->set_dbprefix('gc_en_');
+			
 			return $this->db->insert_id();
 		}
 	}
@@ -128,9 +156,19 @@ Class Customer_model extends CI_Model
 		$this->db->where('id', $id);
 		$this->db->delete('customers');
 		
+		$this->db->set_dbprefix('');
+		$this->db->where('id', $id);
+		$this->db->delete('gc_fr_customers');
+		$this->db->set_dbprefix('gc_en_');
+		
 		// Delete Address records
 		$this->db->where('customer_id', $id);
 		$this->db->delete('customers_address_bank');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('customer_id', $id);
+		$this->db->delete('gc_fr_customers_address_bank');
+		$this->db->set_dbprefix('gc_en_');
 		
 		//get all the orders the customer has made and delete the items from them
 		$this->db->select('id');
@@ -142,9 +180,22 @@ Class Customer_model extends CI_Model
 			$this->db->delete('order_items');
 		}
 		
+		$this->db->set_dbprefix('');
+		foreach ($result as $order)
+		{
+			$this->db->where('order_id', $order->id);
+			$this->db->delete('gc_fr_order_items');
+		}
+		$this->db->set_dbprefix('gc_en_');
+		
 		//delete the orders after the items have already been deleted
 		$this->db->where('customer_id', $id);
 		$this->db->delete('orders');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('customer_id', $id);
+		$this->db->delete('gc_fr_orders');
+		$this->db->set_dbprefix('gc_en_');
 	}
 	
 	function check_email($str, $id=false)
@@ -361,6 +412,11 @@ Class Customer_model extends CI_Model
 	{
 		$this->db->where('id', $id);
 		$this->db->delete('customer_groups');
+		
+		$this->db->set_dbprefix('');
+		$this->db->where('id', $id);
+		$this->db->delete('gc_fr_customer_groups');
+		$this->db->set_dbprefix('gc_en_');
 	}
 	
 	function save_group($data)
@@ -368,9 +424,19 @@ Class Customer_model extends CI_Model
 		if(!empty($data['id'])) 
 		{
 			$this->db->where('id', $data['id'])->update('customer_groups', $data);
+			
+			$this->db->set_dbprefix('');
+			$this->db->where('id', $data['id'])->update('gc_fr_customer_groups', $data);
+			$this->db->set_dbprefix('gc_en_');
+		
 			return $data['id'];
 		} else {
 			$this->db->insert('customer_groups', $data);
+			
+			$this->db->set_dbprefix('');
+			$this->db->insert('gc_fr_customer_groups', $data);
+			$this->db->set_dbprefix('gc_en_');
+			
 			return $this->db->insert_id();
 		}
 	}

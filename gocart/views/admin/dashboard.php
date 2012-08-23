@@ -49,7 +49,7 @@
 
 <div class="row">
 	<div class="span12" style="text-align:center;">
-		<a class="btn btn-large" href="<?php echo $admin_url;?>orders"><?php echo lang('view_all_orders');?></a>
+		<a class="btn btn-large" href="<?php echo $admin_url;?>orders<?php echo $this->config->item('url_suffix');?>"><?php echo lang('view_all_orders');?></a>
 	</div>
 </div>
 
@@ -92,7 +92,7 @@
 
 <div class="row">
 	<div class="span12" style="text-align:center;">
-		<a class="btn btn-large" href="<?php echo $admin_url;?>customers"><?php echo lang('view_all_customers');?></a>
+		<a class="btn btn-large" href="<?php echo $admin_url;?>customers<?php echo $this->config->item('url_suffix');?>"><?php echo lang('view_all_customers');?></a>
 	</div>
 </div>
 <?php include('footer.php');

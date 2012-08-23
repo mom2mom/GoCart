@@ -33,5 +33,7 @@ $lang['meta_data_description']		= 'ex. &lt;meta name="description" content="We s
 $lang['drag_and_drop']				= 'Drag and drop the products in the order you would like them to appear.';
 $lang['sku']						= 'SKU';
 $lang['price']						= 'Price';
-$lang['sale']						= 'Sale';
+$lang['original']					= 'Original price';
+$lang['sale']						= 'Reduced price';
+$lang['solde']						= 'Sale price';
 $lang['max_file_size']				= 'Max File Size';

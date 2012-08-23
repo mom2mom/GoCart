@@ -19,6 +19,7 @@ Common Language
 //common terms
 $lang['login']					= 'Login';
 $lang['logout']					= 'Logout';
+$lang['title_catalog']			= 'Catalog';
 $lang['my_account']				= 'My Account';
 $lang['my_downloads']			= 'My Downloads';
 $lang['enabled']				= 'Enabled';
@@ -36,7 +37,9 @@ $lang['multiple_items']			= 'There are %d items in your cart';
 $lang['empty_view_cart']		= 'There are no products in your cart!';
 $lang['your_cart']				= 'Your Cart';
 
-$lang['on_sale']				= 'On Sale!';
+$lang['on_original']			= 'Original price !';
+$lang['on_sale']				= 'Reduced price !';
+$lang['on_solde']				= 'Sale price !';
 $lang['related_products_title']	= 'You might also like...';
 $lang['form_submit']			= 'Submit';
 $lang['form_register']			= 'Register';
@@ -79,7 +82,8 @@ $lang['no_products']			= 'There are currently no available products in this cate
 $lang['no_image_available']		= 'No Image Available';
 $lang['product_reg']			= 'reg:';
 $lang['product_price']			= 'Price:';
-$lang['product_sale']			= 'SALE:';
+$lang['product_sale']			= 'REDUCED PRICE:';
+$lang['product_solde']			= 'PRICE ON SALE:';
 $lang['available_options']		= 'Available Options';
 $lang['choose_option']			= 'Choose an Option';
 $lang['tab_description']		= 'Description';

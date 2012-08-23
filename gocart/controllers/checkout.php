@@ -234,6 +234,7 @@ class Checkout extends CI_Controller {
 			{
 				$this->form_validation->set_rules('bill_zip', 'Billing Zip', 'trim|max_length[10]');
 			}
+			
 		}
 		
 		$this->form_validation->set_rules('ship_address_id', 'Shipping Address ID', 'numeric');
@@ -247,7 +248,6 @@ class Checkout extends CI_Controller {
 		$this->form_validation->set_rules('ship_city', 'Shipping City', 'trim|required|max_length[128]');
 		$this->form_validation->set_rules('ship_country_id', 'Shipping Country', 'trim|required|numeric');
 		$this->form_validation->set_rules('ship_zone_id', 'Shipping State', 'trim|required|numeric');
-
 		//if there is post data, get the country info and see if the zip code is required
 		if($this->input->post('ship_country_id'))
 		{
@@ -484,6 +484,14 @@ class Checkout extends CI_Controller {
 		
 		//// save the order
 		$order_id = $this->go_cart->save_order();
+		
+		/*
+		//save loop
+		for($i=0; $i<100; $i++)
+		{
+			$this->go_cart->save_order();
+		}
+		*/
 		
 		$data['order_id']			= $order_id;
 		$data['shipping']			= $this->go_cart->shipping_method();

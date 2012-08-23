@@ -19,6 +19,8 @@ class Secure extends CI_Controller {
 	
 	var $customer;
 	
+	var $header_urls;
+	
 	function __construct()
 	{
 		parent::__construct();
@@ -42,6 +44,8 @@ class Secure extends CI_Controller {
 		{
 			$this->gift_cards_enabled = true;
 		}
+		
+		$this->header_urls = $this->Category_model->get_header_urls();
 		
 		//load the theme package
 		$this->load->add_package_path(APPPATH.'themes/'.$this->config->item('theme').'/');
@@ -122,6 +126,8 @@ class Secure extends CI_Controller {
 		//$data['banners']	= $this->banner_model->get_banners();
 		//$data['ads']		= $this->banner_model->get_banners(true);
 		$data['categories']	= $this->Category_model->get_categories_tierd(0);
+		
+		$data['header_urls'] = $this->header_urls;
 			
 		$this->load->view('login', $data);
 	}
@@ -155,6 +161,8 @@ class Secure extends CI_Controller {
 		
 		$data['page_title']	= lang('account_registration');
 		$data['gift_cards_enabled'] = $this->gift_cards_enabled;
+		
+		$data['header_urls'] = $this->header_urls;
 		
 		//default values are empty if the customer is new
 
@@ -322,6 +330,7 @@ class Secure extends CI_Controller {
 		//$data['ads']		= $this->banner_model->get_banners(true);
 		$data['categories']	= $this->Category_model->get_categories_tierd();
 		
+		$data['header_urls'] = $this->header_urls;
 		
 		$this->load->view('forgot_password', $data);
 	}
@@ -339,6 +348,8 @@ class Secure extends CI_Controller {
 		
 		$data['page_title']			= 'Welcome '.$data['customer']['firstname'].' '.$data['customer']['lastname'];
 		$data['customer_addresses']	= $this->Customer_model->get_address_list($data['customer']['id']);
+		
+		$data['header_urls'] = $this->header_urls;
 		
 		// load other page content 
 		//$this->load->model('banner_model');
@@ -465,6 +476,8 @@ class Secure extends CI_Controller {
 		
 		$data['page_title'] = lang('my_downloads');
 		
+		$data['header_urls'] = $this->header_urls;
+		
 		$this->load->view('my_downloads', $data);
 	}
 	
@@ -565,7 +578,8 @@ class Secure extends CI_Controller {
 		$data['zone_id']	= '';
 		$data['zip']		= '';
 		
-
+		$data['header_urls'] = $this->header_urls;
+		
 		if($id != 0)
 		{
 			$a	= $this->Customer_model->get_address($id);

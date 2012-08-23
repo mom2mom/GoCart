@@ -33,7 +33,7 @@ function add_product_image(data)
 {
 	p	= data.split('.');
 	
-	var photo = '<?php add_image("'+p[0]+'", "'+p[0]+'.'+p[1]+'", '', '', '', base_url('uploads/images/thumbnails'));?>';
+	var photo = '<?php add_image("'+p[0]+'", "'+p[0]+'.'+p[1]+'", '', '', '', base_url(IMG_UPLOAD_FOLDER.'uploads/images/thumbnails'));?>';
 	$('#gc_photos').append(photo);
 	$('#gc_photos').sortable('destroy');
 	photos_sortable();
@@ -69,7 +69,6 @@ function remove_option(id)
 //]]>
 </script>
 
-
 <?php echo form_open($this->config->item('admin_folder').'/products/form/'.$id ); ?>
 <div class="row">
 	<div class="span8">
@@ -96,7 +95,6 @@ function remove_option(id)
 						?>
 					</div>
 				</div>
-				
 				<div class="row">
 					<div class="span8">
 						<?php
@@ -406,17 +404,13 @@ function remove_option(id)
 						<table class="table table-striped"  id="options_container">
 							<?php
 							$counter	= 0;
-							if(!empty($product_options))
-							
+							foreach($product_options as $po)
 							{
-								foreach($product_options as $po)
-								{
-									$po	= (object)$po;
-									if(empty($po->required)){$po->required = false;}
-
-									add_option($po, $counter);
-									$counter++;
-								}
+								$po	= (object)$po;
+								if(empty($po->required)){$po->required = false;}
+								
+								add_option($po, $counter);
+								$counter++;
 							}?>
 								
 						</table>
@@ -495,8 +489,8 @@ function remove_option(id)
 					<div class="span8">
 						
 						<div id="gc_photos">
-							
 						<?php
+
 						foreach($images as $photo_id=>$photo_obj)
 						{
 							if(!empty($photo_obj))
@@ -564,14 +558,12 @@ function remove_option(id)
 
 <?php
 function add_image($photo_id, $filename, $alt, $caption, $primary=false)
-{
-
-	ob_start();
+{	ob_start();
 	?>
 	<div class="row gc_photo" id="gc_photo_<?php echo $photo_id;?>" style="background-color:#fff; border-bottom:1px solid #ddd; padding-bottom:20px; margin-bottom:20px;">
 		<div class="span2">
 			<input type="hidden" name="images[<?php echo $photo_id;?>][filename]" value="<?php echo $filename;?>"/>
-			<img class="gc_thumbnail" src="<?php echo base_url('uploads/images/thumbnails/'.$filename);?>" style="padding:5px; border:1px solid #ddd"/>
+			<img class="gc_thumbnail" src="<?php echo base_url(IMG_UPLOAD_FOLDER.'uploads/images/thumbnails/'.$filename);?>" style="padding:5px; border:1px solid #ddd"/>
 		</div>
 		<div class="span6">
 			<div class="row">

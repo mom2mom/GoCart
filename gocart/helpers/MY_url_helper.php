@@ -37,7 +37,9 @@ if ( ! function_exists('remove_ssl'))
 function theme_url($uri)
 {
 	$CI =& get_instance();
-	return $CI->config->base_url('gocart/themes/'.$CI->config->item('theme').'/'.$uri);
+	//return $CI->config->base_url('gocart/themes/'.$CI->config->item('theme').'/'.$uri);
+	$assets_location = $CI->config->item('assets_folder');
+	return $CI->config->base_url($assets_location.$uri);
 }
 
 //to generate an image tag, set tag to true. you can also put a string in tag to generate the alt tag

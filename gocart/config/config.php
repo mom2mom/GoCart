@@ -70,7 +70,7 @@ $config['url_suffix'] = '/shopping-cart/admin_12/html';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language']	= 'french';
 
 /*
 |--------------------------------------------------------------------------
